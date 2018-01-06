@@ -22,13 +22,14 @@ class InproceedingsHandler extends DefaultHandler {
     private boolean bEE;
     private boolean bCrossref;
     private boolean bUrl;
-
+    
     StringBuilder sb = new StringBuilder();
+    
+    SQLGenerator sqlGen = new SQLGenerator();
         
     @Override
     public void startDocument() throws org.xml.sax.SAXException {            
         System.out.println("Starting to scan document...");
-        //Optionally, create a new document or append to an existing one
     }
 
     @Override
@@ -38,10 +39,7 @@ class InproceedingsHandler extends DefaultHandler {
 
     @Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-            System.out.println("uri: " + uri);
-            System.out.println("localName: " + localName);
-            System.out.println("qName: " + qName);
-    			sb.delete(0, sb.length());
+            sb.delete(0, sb.length());
             if (qName.equalsIgnoreCase("inproceedings")) {
                 bInproceedings = true;
                 inproceedings = new Inproceedings();
@@ -76,18 +74,20 @@ class InproceedingsHandler extends DefaultHandler {
 	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
             if (qName.equalsIgnoreCase("inproceedings")) {
-                bInproceedings = false;
-                if( inproceedings.getYear() >= Constants.LOWER_YEAR_LIMIT &&
-                    inproceedings.getYear() <= Constants.HIGHER_YEAR_LIMIT ){
-                		System.out.println("Item is located between the year limit!");
-                	}   
+            		//Here is where an element finishes, so we handle it to the SQLGenerator class for it to be put in a SQL file.
+            		bInproceedings = false;
+            		if (inproceedings.getBooktitle().equals(DBLPWrapper.acronym)) {
+            			if( inproceedings.getYear() >= Constants.LOWER_YEAR_LIMIT && inproceedings.getYear() <= Constants.HIGHER_YEAR_LIMIT ){
+            				sqlGen.generatePaperInsert(inproceedings);
+            			}
+            		}
             }
 
             if (bInproceedings) {
 
                     if (bAuthor) {
 
-                            System.out.println("Author: " + sb.toString());
+                            //System.out.println("Author: " + sb.toString());
                             if (inproceedings != null) {
                                     inproceedings.addAuthors(sb.toString());
                             }
@@ -97,7 +97,7 @@ class InproceedingsHandler extends DefaultHandler {
 
                     } else if (bTitle) {
 
-                            System.out.println("Title: " + sb.toString());
+                            //System.out.println("Title: " + sb.toString());
                             if (inproceedings != null) {                                
                                     inproceedings.setTitle(sb.toString().replaceAll("'","`"));
                                     
@@ -108,7 +108,7 @@ class InproceedingsHandler extends DefaultHandler {
 
                     } else if (bPages) {
 
-                            System.out.println("Pages: " + sb.toString());
+                            //System.out.println("Pages: " + sb.toString());
                             if (inproceedings != null) {
                                     inproceedings.setPages(sb.toString());
                             }
@@ -118,7 +118,7 @@ class InproceedingsHandler extends DefaultHandler {
 
                     } else if (bYear) {
 
-                            System.out.println("Year: " + sb.toString());
+                            //System.out.println("Year: " + sb.toString());
                             if (inproceedings != null) {
                                     inproceedings.setYear(Integer.parseInt(sb.toString()));
                             }
@@ -128,7 +128,7 @@ class InproceedingsHandler extends DefaultHandler {
 
                     } else if (bBooktitle) {
 
-                            System.out.println("Booktitle: " + sb.toString());
+                            //System.out.println("Booktitle: " + sb.toString());
                             if (inproceedings != null) {
                                     inproceedings.setBooktitle(sb.toString());
                             }
@@ -138,7 +138,7 @@ class InproceedingsHandler extends DefaultHandler {
 
                     } else if (bEE) {
 
-                            System.out.println("EE: " + sb.toString());
+                            //System.out.println("EE: " + sb.toString());
                             if (inproceedings != null) {
                                     inproceedings.setEe(sb.toString());
                             }
@@ -148,7 +148,7 @@ class InproceedingsHandler extends DefaultHandler {
 
                     } else if (bCrossref) {
 
-                            System.out.println("Crossref: " + sb.toString());
+                            //System.out.println("Crossref: " + sb.toString());
                             if (inproceedings != null) {
                                     inproceedings.setCrossref(sb.toString());
                             }
@@ -158,7 +158,7 @@ class InproceedingsHandler extends DefaultHandler {
 
                     } else if (bUrl) {
 
-                            System.out.println("Url: " + sb.toString());
+                            //System.out.println("Url: " + sb.toString());
                             if (inproceedings != null) {
                                     inproceedings.setUrl(sb.toString());
                             }

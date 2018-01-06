@@ -6,8 +6,10 @@ import javax.xml.parsers.SAXParserFactory;
 
 public class DBLPWrapper {
 	
-	public static String[] bts;
-	public static String actualAcronym = "";
+	public static String acronym = "BIODEVICES";
+	public static int idVehicle = 0;
+	
+	public static File outputFile = null;
 	
     public static void main(String[] args) {
     		System.out.println("Wrapper is initiating...");
@@ -20,6 +22,8 @@ public class DBLPWrapper {
     		File inputFile = new File(Constants.REQUIRED_FILE_XML); 
         SAXParserFactory factory = SAXParserFactory.newInstance();
         SAXParser saxParser = null;
+        
+        outputFile = new File(Constants.OUTPUT_FILE_PATH + acronym + ".sql");
         
         try {
             saxParser = factory.newSAXParser();            
