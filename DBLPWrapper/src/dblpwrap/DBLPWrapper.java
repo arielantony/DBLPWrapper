@@ -27,13 +27,12 @@ public class DBLPWrapper {
         
         File booktitles = new File(Constants.BOOKTITLES_IDS_FILE);
         
-        outputFile = new File(Constants.OUTPUT_FILE_PATH + acronym + ".sql");
-        
         try {
         		Scanner scan = new Scanner(booktitles);
         		while (scan.hasNext()) {
         			acronym = scan.next();
         			idVehicle = scan.nextInt();
+        			outputFile = new File(Constants.OUTPUT_FILE_PATH + acronym + ".sql");
 	        		saxParser = factory.newSAXParser();            
 	            	InproceedingsHandler inproceedingsHandler =  new InproceedingsHandler();
 	            saxParser.parse(inputFile, inproceedingsHandler);
