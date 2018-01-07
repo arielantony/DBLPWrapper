@@ -1,12 +1,14 @@
 package dblpwrap;
 
 import java.io.File;
+import java.util.Scanner;
+
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 public class DBLPWrapper {
 	
-	public static String acronym = "BIODEVICES";
+	public static String acronym = "";
 	public static int idVehicle = 0;
 	
 	public static File outputFile = null;
@@ -23,12 +25,21 @@ public class DBLPWrapper {
         SAXParserFactory factory = SAXParserFactory.newInstance();
         SAXParser saxParser = null;
         
+        File booktitles = new File(Constants.BOOKTITLES_IDS_FILE);
+        
         outputFile = new File(Constants.OUTPUT_FILE_PATH + acronym + ".sql");
         
         try {
-            saxParser = factory.newSAXParser();            
-            	InproceedingsHandler inproceedingsHandler =  new InproceedingsHandler();
-            	saxParser.parse(inputFile, inproceedingsHandler);
+        		Scanner scan = new Scanner(booktitles);
+        		while (scan.hasNext()) {
+        			acronym = scan.next();
+        			idVehicle = scan.nextInt();
+	        		saxParser = factory.newSAXParser();            
+	            	InproceedingsHandler inproceedingsHandler =  new InproceedingsHandler();
+	            saxParser.parse(inputFile, inproceedingsHandler);
+        			System.out.println("Booktitle: " + acronym + " has ID " + idVehicle);
+        		}
+        		scan.close();
         } catch (Exception e) {
             e.printStackTrace();
         }		
