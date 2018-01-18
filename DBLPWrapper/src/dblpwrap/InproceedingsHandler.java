@@ -1,4 +1,6 @@
 package dblpwrap;
+import java.util.ArrayList;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -24,12 +26,15 @@ class InproceedingsHandler extends DefaultHandler {
     private boolean bUrl;
     
     StringBuilder sb = new StringBuilder();
-    
     SQLGenerator sqlGen = new SQLGenerator();
+    ArrayList<String> similares = new ArrayList<String>();
         
     @Override
     public void startDocument() throws org.xml.sax.SAXException {            
         System.out.println("Starting to scan document...");
+        this.similares = DBLPWrapper.similares.get(DBLPWrapper.idVehicle);
+        System.out.println("Searching for booktitle (" + DBLPWrapper.acronym + ")");
+        //System.exit(0);
     }
 
     @Override
@@ -76,10 +81,15 @@ class InproceedingsHandler extends DefaultHandler {
             if (qName.equalsIgnoreCase("inproceedings")) {
             		//Here is where an element finishes, so we handle it to the SQLGenerator class for it to be put in a SQL file.
             		bInproceedings = false;
-            		if (inproceedings.getBooktitle().equals(DBLPWrapper.acronym)) {
-            			if( inproceedings.getYear() >= Constants.LOWER_YEAR_LIMIT && inproceedings.getYear() <= Constants.HIGHER_YEAR_LIMIT ){
-            				sqlGen.generatePaperInsert(inproceedings);
-            			}
+            		//System.out.println("Booktitle: " + inproceedings.getBooktitle() + " is being read!");
+            		for (int c = 0; c < this.similares.size(); c++) {
+            			//System.out.println(this.similares.get(c));
+	            		if (inproceedings.getBooktitle().equals(this.similares.get(c))) {
+	            			if( (inproceedings.getYear() >= Constants.LOWER_YEAR_LIMIT) && (inproceedings.getYear() <= Constants.HIGHER_YEAR_LIMIT) ){
+	            				sqlGen.generatePaperInsert(inproceedings);
+	            				//System.exit(0);
+	            			}
+	            		}
             		}
             }
 

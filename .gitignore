@@ -1,2 +1,5 @@
 /DBLPWrapper/dblp.*
 /DBLPWrapper/booktitles_ids
+/DBLPWrapper/SQLInserts
+/DBLPWrapper/.DS_Store
+/.DS_Store
