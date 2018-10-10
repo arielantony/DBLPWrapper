@@ -50,11 +50,9 @@ public class DBLPWrapper {
         
         parseFile();
         
-        System.out.println("The following itens are in the collection:");
         Set<Integer> keys = similares.keySet();
         for(Integer key : keys){
-            //System.out.println("Value of " + key + " is: " + similares.get(key));
-	        	try {
+            	try {
 	        		acronym = similares.get(key).get(0);
 	        		idVehicle = key;
 	        		outputFile = new File(Constants.OUTPUT_FILE_PATH + acronym + ".sql");
@@ -66,27 +64,6 @@ public class DBLPWrapper {
 	        	}
         }
         
-        //File booktitles = new File(Constants.BOOKTITLES_IDS_FILE);
-        
-        try {
-        		//Scanner scan = new Scanner(booktitles);
-        		/*while (scan.hasNext()) {
-        			String line = scan.nextLine();
-        			System.out.println("Got booktitle and ID -> " + line);
-        			String[] data = line.split(Pattern.quote("\\"));
-        			System.out.println("Got booktitle -> " + data[0] + " and ID (" + data[1] + ")");
-        			ArrayList<String> sim = similares.getOrDefault(new Integer(data[1]), new ArrayList<String>());
-        			sim.add(data[0]);
-        		}
-        		scan.close();*/
-        			//acronym = scan.next();
-        			//idVehicle = scan.nextInt();
-        			//System.out.println("Booktitle: " + acronym + " has ID " + idVehicle);
-        		
-        } catch (Exception e) {
-            e.printStackTrace();
-        }		
-    
     }
     
 }

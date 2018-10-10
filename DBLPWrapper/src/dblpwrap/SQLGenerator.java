@@ -8,7 +8,7 @@ public class SQLGenerator {
 	private String insert = null;
 	
 	public void generatePaperInsert(Inproceedings i) {
-		insert = "INSERT INTO Artigo (Titulo,Ano,Autores,Veiculo_idVeiculo)" + " VALUES ('"+i.getTitle()+"',"+i.getYear()+",'" + i.getStringAuthors()+"'," + DBLPWrapper.idVehicle + ")\n";
+		insert = "INSERT INTO Artigo (Titulo,Ano,Autores,Veiculo_idVeiculo)" + " VALUES ('"+i.getTitle()+"',"+i.getYear()+",'" + i.getStringAuthors()+"'," + DBLPWrapper.idVehicle + ");\n";
 		//System.out.println(insert);
 		writeInsertToFile();
 	}

@@ -81,13 +81,11 @@ class InproceedingsHandler extends DefaultHandler {
             if (qName.equalsIgnoreCase("inproceedings")) {
             		//Here is where an element finishes, so we handle it to the SQLGenerator class for it to be put in a SQL file.
             		bInproceedings = false;
-            		//System.out.println("Booktitle: " + inproceedings.getBooktitle() + " is being read!");
             		for (int c = 0; c < this.similares.size(); c++) {
-            			//System.out.println(this.similares.get(c));
-	            		if (inproceedings.getBooktitle().equals(this.similares.get(c))) {
+            			if (inproceedings.getBooktitle().equals(this.similares.get(c))) {
+	            			System.out.println("Found paper from " + DBLPWrapper.acronym + " and its year is " + inproceedings.getYear());
 	            			if( (inproceedings.getYear() >= Constants.LOWER_YEAR_LIMIT) && (inproceedings.getYear() <= Constants.HIGHER_YEAR_LIMIT) ){
 	            				sqlGen.generatePaperInsert(inproceedings);
-	            				//System.exit(0);
 	            			}
 	            		}
             		}
@@ -142,6 +140,9 @@ class InproceedingsHandler extends DefaultHandler {
                             if (inproceedings != null) {
                                     inproceedings.setBooktitle(sb.toString());
                             }
+                            //if (sb.toString().equals(DBLPWrapper.acronym)) {
+                            //	System.out.println("achei!");
+                            //}
                             sb.delete(0, sb.length());
                             bBooktitle = false;
                             return;

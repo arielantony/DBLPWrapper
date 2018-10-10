@@ -62,7 +62,7 @@ public class Inproceedings {
     }
 
     public String getBooktitle() {
-        return booktitle.toUpperCase();
+        return booktitle; //.toUpperCase();
     }
 
     public void setBooktitle(String booktitle) {
